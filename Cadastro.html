@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cadastro de produtos</title>
+
+    <body>
+
+    <h1 style="font-style: bold;">Cadastro de Produtos (Array de Objetos)</h1>
+
+    <div class="comandos">
+        <p>Produto:</p> <input placeholder="Ex: Mouse" type="text" id="nome">
+        <p>Preço:</p> <input placeholder="Ex:99,90" type="text" id="preço">
+        <p>Quantidade:</p> <input placeholder="Ex: 2" type="number" id="quantidade">
+        <button type="button" onclick="adicionarProduto()">Adicionar Produto</button>
+        <button type="button" onclick="listarProdutos()">Listar Produtos</button>
+        <button type="button" onclick="resumoBotão()">Resumo</button>
+        <button type="button" onclick="limparTudo()">Limpar Tudo</button>
+    </div>
+
+    <hr>
+
+    <h2 style="font-style: bold; font-size: 20px;">Remover por índice</h2>
+
+    <div class="comandos">
+        <input placeholder="Ex: 0" type="number" id="indice">
+        <button type="button" onclick="remover()">Remover</button>
+    </div>
+
+    <div id="informacao" style="margin-top: 15px;"></div>
+
+    <style>
+        .comandos {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+
+    <script>
+        // Criar o array ainda vazio
+        let produtos = [];
+
+        // Cria a função do botão Adicionar Produto
+        function adicionarProduto() {
+            // Pega os valores digitados nos inputs
+            let nome = document.getElementById("nome").value;
+            let preco = document.getElementById("preço").value;
+            let quant = document.getElementById("quantidade").value;
+
+            // Caso algum campo esteja vazio, gera mensagem de erro
+            if (nome === "", preco === "", quant === "") {
+                document.getElementById("informacao").innerText = `Adicione as informações primeiro.`;
+                return;
+            }
+
+            // Configura como as informações serão dispostas no array
+            let produto = {
+                nome: nome,
+                preco: parseFloat(preco),
+                quant: Number(quant)
+            };
+
+            // Faz com que os itens sejam adicionados no array
+            produtos.push(produto);
+
+            // Gera a mensagem de confirmação
+            document.getElementById("informacao").innerText = `Produto adicionado. Total cadastrado: ${produtos.length}`;
+
+            // Apaga o que estava digitado antes nos inputs
+            document.getElementById("nome").value = "";
+            document.getElementById("preço").value = "";
+            document.getElementById("quantidade").value = "";
+        }
+
+        // Cria a função do botão Listar Produtos
+        function listarProdutos() {
+            // Caso ainda não haja nenhum produto ele gera a mensagem de erro
+            if(produtos.lenght === 0) {
+                document.getElementById("informacao").innerText = "Não há produtos cadastrados.";
+                return;
+            }
+
+            // Cria a variável "tabelinha" e monta ela com elementos do HTML
+            let tabelinha = `
+            <h3>Produtos Cadastrados</h3>
+            <table border="1">
+                <tr>
+                    <th>Índice</th>
+                    <th>Produto</th>
+                    <th>Preço (R$)</th>
+                    <th>Quantidade</th>
+                    <th>Subtotal (R$)</th>
+                </tr>
+            `;
+
+            // Usa o forEach para indicar o índice e recebe o array completo
+            produtos.forEach((produto, index) => {
+                let subtotal = produto.preco * produto.quant;
+
+                // Adiciona os valores na tabela
+                tabelinha += `
+                    <tr>
+                        <td>${index}</td>
+                        <td>${produto.nome}</td>
+                        <td>${produto.preco}</td>
+                        <td>${produto.quant}</td>
+                        <td>${subtotal.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+
+            // Determina que o "table" retorne concluído
+            tabelinha += "</table>";
+
+            // Faz com que a tabela criada seja exibida
+            document.getElementById("informacao").innerHTML = tabelinha;
+        }
+
+        // Cria a função para o botão Resumo
+        function resumoBotão() {
+            // Cria duas variáveis que foram modificados para apresentar soma e multiplicação
+            let qntTotal = 0;
+            let estoque = 0;
+
+            produtos.forEach((produto) => {
+                let subtotal = produto.preco * produto.quant;
+                qntTotal += produto.quant;
+                estoque += subtotal;
+            });
+            
+            // Cria o resumo já exibindo os resultados nescessários
+            let resumo = `
+            <h4 style="font-style: bold; font-size: 20px;">Resumo</h4>
+            <p>Total de produtos (linhas): ${produtos.length}</p>
+            <p>Total de itens (somando quantidades): ${qntTotal}</p>
+            <p>Valor total do estoque: R$ ${estoque}</p>`;
+
+            // Exibe o resumo
+            document.getElementById("informacao").innerHTML = resumo;
+        }
+
+        // Cria a função do botão Limpar Tudo
+        function limparTudo() {
+            // Esvazia o array
+            produtos = [];
+
+            // Dá a mensagem de confirmação
+            document.getElementById("informacao").innerText = "Todos os produtos foram excluídos.";
+        }
+
+        // Cria a função do botão Remover em índice
+        function remover() {
+            // Pega o valor do indice no input
+            let indice = Number(document.getElementById("indice").value);
+
+            // Caso o valor digitado não seja um número, seja menor que zero ou o indice seja maior que o que existe gera a mensagem
+            if (isNaN(indice), indice < 0, indice >= produtos.length) {
+                document.getElementById("informacao").innerText = "Digite um índice válido e tente novamente.";
+                return;
+            }
+
+            // Splice permite você modificar o array, nesse caso ele tira o número pedido e apenas 1
+            produtos.splice(indice, 1);
+
+            // Exibe a mensagem de sucesso
+            document.getElementById("informacao").innerText = `Produto removido da lista. Total cadastrados: ${produtos.length}`;
+
+            // Tira o que estava digitado
+            document.getElementById("indice").value = "";
+        }
+    </script>
+ </body>
+<html>
