@@ -6,7 +6,7 @@
     <title>Cadastro de produtos</title>
 
     <body>
-
+        <div class="card">
     <h1 style="font-style: bold;">Cadastro de Produtos (Array de Objetos)</h1>
 
     <div class="comandos">
@@ -15,11 +15,12 @@
         <p>Quantidade:</p> <input placeholder="Ex: 2" type="number" id="quantidade">
         <button type="button" onclick="adicionarProduto()">Adicionar Produto</button>
         <button type="button" onclick="listarProdutos()">Listar Produtos</button>
-        <button type="button" onclick="resumoBotão()">Resumo</button>
+        <button type="button" onclick="resumo()">Resumo</button>
         <button type="button" onclick="limparTudo()">Limpar Tudo</button>
     </div>
 
-    <hr>
+    <p class = "resenha"></p>
+    <p></p>
 
     <h2 style="font-style: bold; font-size: 20px;">Remover por índice</h2>
 
@@ -29,14 +30,64 @@
     </div>
 
     <div id="informacao" style="margin-top: 15px;"></div>
+</div>
+   <style>
+    body {
+        /* Centralização da imagem de fundo */
+        background-image: url(mercadinho.avif);
+        background-position: center;
+        background-size: cover;     
+        background-repeat: no-repeat;
+        background-attachment: fixed; 
+        font-family: Arial, Helvetica, sans-serif;
+        color: rgb(255, 255, 255);
+        margin: 0;
+        min-height: 100vh;  
+        display: flex;
+        justify-content: center;     
+        align-items: center;         
+    }
 
-    <style>
-        .comandos {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-    </style>
+    .card {
+        background: rgba(0, 0, 0, 0); 
+        backdrop-filter: blur(10px);     
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 30px;
+        padding: 40px;
+        margin: 20px;
+
+                    
+    }
+
+    .comandos {
+        display: flex;
+        flex-wrap: wrap;                 
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    button {
+        border-radius: 9px;
+        height: 2.3rem;
+        border: 1px solid white;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;}
+        
+
+    
+
+    input {
+        border-radius: 9px;
+        height: 2.4rem;
+        
+        border: none;
+        padding: 0 10px;
+    }
+
+   
+</style>
+
 
     <script>
         // Criar o array ainda vazio
@@ -77,10 +128,12 @@
         // Cria a função do botão Listar Produtos
         function listarProdutos() {
             // Caso ainda não haja nenhum produto ele gera a mensagem de erro
-            if(produtos.lenght === 0) {
+            if(produtos.length === 0) {
                 document.getElementById("informacao").innerText = "Não há produtos cadastrados.";
                 return;
             }
+
+            else {
 
             // Cria a variável "tabelinha" e monta ela com elementos do HTML
             let tabelinha = `
@@ -116,10 +169,14 @@
 
             // Faz com que a tabela criada seja exibida
             document.getElementById("informacao").innerHTML = tabelinha;
-        }
+        }}
 
         // Cria a função para o botão Resumo
-        function resumoBotão() {
+        function resumo() {
+            if(produtos.length === 0) {
+                document.getElementById("informacao").innerText = "Não há produtos cadastrados.";
+                return;
+            }
             // Cria duas variáveis que foram modificados para apresentar soma e multiplicação
             let qntTotal = 0;
             let estoque = 0;
@@ -143,6 +200,10 @@
 
         // Cria a função do botão Limpar Tudo
         function limparTudo() {
+            if(produtos.length === 0) {
+                document.getElementById("informacao").innerText = "Não há produtos para ser excluídos";
+                return;
+            }
             // Esvazia o array
             produtos = [];
 
